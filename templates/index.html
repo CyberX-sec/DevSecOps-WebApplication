@@ -1,23 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
+    <meta charset="UTF-8">
     <title>الصفحة الرئيسية</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
 </head>
 <body>
-    <h1> التعليقات</h1>
+    <h1>📢 التعليقات</h1>
+
     {% if session.username %}
-    <form action="/comment" method="POST">
-        <textarea name="comment" placeholder="اكتب تعليقك"></textarea>
-        <button type="submit">إرسال</button>
-    </form>
+        <p>مرحباً، <strong>{{ session.username }}</strong> 👋</p>
+
+        <form action="/comment" method="POST">
+            <textarea name="comment" placeholder="اكتب تعليقك هنا..." required></textarea>
+            <br>
+            <button type="submit">💬 إرسال</button>
+        </form>
+
+        <br>
+        <a href="/dashboard">لوحة التحكم</a> |
+        {% if session.role == 'admin' %}
+        <a href="/admin">لوحة الإدارة</a> |
+        {% endif %}
+        <a href="/logout">تسجيل الخروج</a>
+    {% else %}
+        <p>👋 مرحباً بالزائر! يرجى <a href="/login">تسجيل الدخول</a> أو <a href="/register">إنشاء حساب</a> للمشاركة.</p>
     {% endif %}
+
+    <hr>
+
+    <h2>📝 التعليقات العامة:</h2>
     <ul>
         {% for c in comments %}
             <li><strong>{{ c.username }}</strong>: {{ c.content|safe }}</li>
+        {% else %}
+            <li>لا توجد تعليقات بعد.</li>
         {% endfor %}
     </ul>
-    <a href="/logout">تسجيل خروج</a>
 </body>
 </html>
