@@ -6,36 +6,47 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>📢 التعليقات</h1>
+    <header>
+        📢 نظام التعليقات
+    </header>
 
-    {% if session.username %}
-        <p>مرحباً، <strong>{{ session.username }}</strong> 👋</p>
+    <div class="container">
 
-        <form action="/comment" method="POST">
-            <textarea name="comment" placeholder="اكتب تعليقك هنا..." required></textarea>
-            <br>
-            <button type="submit">💬 إرسال</button>
-        </form>
+        {% if session.username %}
+            <p>مرحباً، <strong>{{ session.username }}</strong> 👋</p>
 
-        <br>
-        <a href="/dashboard">لوحة التحكم</a> |
-        {% if session.role == 'admin' %}
-        <a href="/admin">لوحة الإدارة</a> |
-        {% endif %}
-        <a href="/logout">تسجيل الخروج</a>
-    {% else %}
-        <p>👋 مرحباً بالزائر! يرجى <a href="/login">تسجيل الدخول</a> أو <a href="/register">إنشاء حساب</a> للمشاركة.</p>
-    {% endif %}
+            <form action="/comment" method="POST">
+                <textarea name="comment" placeholder="اكتب تعليقك هنا..." required></textarea>
+                <br>
+                <button type="submit">💬 إرسال</button>
+            </form>
 
-    <hr>
-
-    <h2>📝 التعليقات العامة:</h2>
-    <ul>
-        {% for c in comments %}
-            <li><strong>{{ c.username }}</strong>: {{ c.content|safe }}</li>
+            <a href="/dashboard">لوحة التحكم</a>
+            {% if session.role == 'admin' %}
+                | <a href="/admin">لوحة الإدارة</a>
+            {% endif %}
+            | <a href="/logout">تسجيل الخروج</a>
         {% else %}
-            <li>لا توجد تعليقات بعد.</li>
-        {% endfor %}
-    </ul>
+            <p>👋 مرحباً! <a href="/login">سجّل الدخول</a> أو <a href="/register">أنشئ حساب</a> للمشاركة.</p>
+        {% endif %}
+
+        <hr>
+
+        <h2>📝 التعليقات:</h2>
+        <ul class="comments">
+            {% for c in comments %}
+                <li>
+                    <div class="comment-username">{{ c.username }}</div>
+                    <div class="comment-content">{{ c.content|safe }}</div>
+                </li>
+            {% else %}
+                <li>لا توجد تعليقات بعد.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <footer>
+        &copy; {{ 2025 }} جميع الحقوق محفوظة
+    </footer>
 </body>
 </html>
