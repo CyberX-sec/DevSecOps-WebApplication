@@ -1,38 +1,38 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>الصفحة الرئيسية</title>
+    <title>Home Page</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header>
-        📢 نظام التعليقات
+        📢 Comment System
     </header>
 
     <div class="container">
 
         {% if session.username %}
-            <p>مرحباً، <strong>{{ session.username }}</strong> 👋</p>
+            <p>Welcome, <strong>{{ session.username }}</strong> 👋</p>
 
             <form action="/comment" method="POST">
-                <textarea name="comment" placeholder="اكتب تعليقك هنا..." required></textarea>
+                <textarea name="comment" placeholder="Write your comment here..." required></textarea>
                 <br>
-                <button type="submit">💬 إرسال</button>
+                <button type="submit">💬 Submit</button>
             </form>
 
-            <a href="/dashboard">لوحة التحكم</a>
+            <a href="/dashboard">Dashboard</a>
             {% if session.role == 'admin' %}
-                | <a href="/admin">لوحة الإدارة</a>
+                | <a href="/admin">Admin Panel</a>
             {% endif %}
-            | <a href="/logout">تسجيل الخروج</a>
+            | <a href="/logout">Logout</a>
         {% else %}
-            <p>👋 مرحباً! <a href="/login">سجّل الدخول</a> أو <a href="/register">أنشئ حساب</a> للمشاركة.</p>
+            <p>👋 Welcome guest! <a href="/login">Login</a> or <a href="/register">Register</a> to participate.</p>
         {% endif %}
 
         <hr>
 
-        <h2>📝 التعليقات:</h2>
+        <h2>📝 Comments:</h2>
         <ul class="comments">
             {% for c in comments %}
                 <li>
@@ -40,13 +40,13 @@
                     <div class="comment-content">{{ c.content|safe }}</div>
                 </li>
             {% else %}
-                <li>لا توجد تعليقات بعد.</li>
+                <li>No comments yet.</li>
             {% endfor %}
         </ul>
     </div>
 
     <footer>
-        &copy; {{ 2025 }} جميع الحقوق محفوظة
+        &copy; {{ 2025 }} All rights reserved
     </footer>
 </body>
 </html>
