@@ -166,6 +166,5 @@ def set_security_headers(response):
     response.headers['Content-Security-Policy'] = "default-src 'self'"
     return response
 
-if __name__ == '__main__':
-    # لا تغير 0.0.0.0 لأن Fly.io يحتاج الاستماع على جميع الواجهات
+if __name__ == '__app__':
     app.run(host='0.0.0.0', port=5000)
