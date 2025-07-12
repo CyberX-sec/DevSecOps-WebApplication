@@ -206,7 +206,7 @@ jobs:
       - name: Scan staging with Nikto
         run: |
           mkdir -p nikto_reports
-          nikto -h https://devops-staging.fly.dev -timeout 5 -Tuning 1 -o nikto_reports/nikto_report.html -Format htm
+          nikto -h http://devops-staging.fly.dev -timeout 5 -Tuning 1 -o nikto_reports/nikto_report.html -Format htm
 
 
 
