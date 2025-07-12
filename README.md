@@ -145,6 +145,4 @@ To build a **secure-by-design** CI/CD pipeline that enables:
 - Early vulnerability detection
 - Zero-touch, zero-trust deployment from commit to production
 
----
 
-> 💬 Want to extend this pipeline with testing, linting, or live monitoring? Pull requests are welcome.
