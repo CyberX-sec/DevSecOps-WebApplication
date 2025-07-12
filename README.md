@@ -1,7 +1,6 @@
-<h1 align="center">🔐 DevSecOps CI/CD Pipeline</h1>
-
+<h1 align="center">🔐 DevSecOps Pipeline</h1>
 <p align="center">
-  Automated pipeline for secure code analysis, Docker image validation, and seamless deployment using GitHub Actions.
+  Built and maintained by <strong>CyberX</strong> — securing your pipeline, step by step.
 </p>
 
 ---
@@ -137,7 +136,7 @@ The pipeline integrates with a Telegram Bot to alert the team of pipeline status
 
 ---
 
-## 🎯 Objective
+## 🎯 Project Objective
 
 To build a **secure-by-design** CI/CD pipeline that enables:
 
@@ -145,4 +144,8 @@ To build a **secure-by-design** CI/CD pipeline that enables:
 - Early vulnerability detection
 - Zero-touch, zero-trust deployment from commit to production
 
+---
 
+<p align="center">
+  Made with 🛠️ and secured by <strong>CyberX</strong>
+</p>
