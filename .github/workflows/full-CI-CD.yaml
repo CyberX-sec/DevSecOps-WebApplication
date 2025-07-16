@@ -126,7 +126,7 @@ jobs:
           if [ "$fail" -eq 1 ]; then
             MSG="Security Scan Failed\n\nIssues:\n- Bandit: $count_bandit\n- Gitleaks: $count_gitleaks\n- Semgrep: $count_semgrep"
           else
-            MSG="Security Scan Passed All checks passed, Bandit:$count_bandit - Gitleaks: $count_gitleaks - Semgrep: $count_semgrep"
+            MSG="Security Scan Passed All checks passed,/n Bandit:$count_bandit /n Gitleaks: $count_gitleaks /n Semgrep: $count_semgrep"
           fi
 
           curl -s -X POST https://api.telegram.org/bot$TOKEN/sendMessage \
