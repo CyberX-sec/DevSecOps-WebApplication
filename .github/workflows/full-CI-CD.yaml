@@ -121,7 +121,7 @@ jobs:
           fi
 
           TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
-          CHAT_ID="5234453428"
+          CHAT_ID="6043769368"
 
           if [ "$fail" -eq 1 ]; then
             MSG="Security Scan Failed\n\nIssues:\n- Bandit: $count_bandit\n- Gitleaks: $count_gitleaks\n- Semgrep: $count_semgrep"
