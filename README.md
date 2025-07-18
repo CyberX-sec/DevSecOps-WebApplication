@@ -39,22 +39,22 @@ This project implements a complete DevSecOps pipeline that:
 
 ## 🔁 Workflow Breakdown
 
-### 🧪 1. `security-check`
+###  1. `security-check`
 
 Performs static code analysis and gathers reports:
 
-- ✅ **Bandit** — Python static analysis (SAST)
-- ✅ **Gitleaks** — Detects hardcoded secrets or credentials
-- ✅ **Semgrep** — Fast, rule-based code pattern analysis
-- ✅ **Black** — Checks Python code formatting
-- ✅ Merges all scan results into `full_report.json`
-- ✅ Sends **Telegram notifications** on success or failure
+-  **Bandit** — Python static analysis (SAST)
+-  **Gitleaks** — Detects hardcoded secrets or credentials
+-  **Semgrep** — Fast, rule-based code pattern analysis
+-  **Black** — Checks Python code formatting
+-  Merges all scan results into `full_report.json`
+-  Sends **Telegram notifications** on success or failure
 
-> ❌ If any **high severity issues** are found, the pipeline fails immediately.
+>  If any **high severity issues** are found, the pipeline fails immediately.
 
 ---
 
-### 🐳 2. `build-and-push`
+###  2. `build-and-push`
 
 - Builds a Docker image from the source code
 - Tags the image as:  
@@ -63,25 +63,25 @@ Performs static code analysis and gathers reports:
 
 ---
 
-### 🔍 3. `dockle-scan`
+###  3. `dockle-scan`
 
 - Uses **Dockle** to scan the pushed Docker image
 - Checks for:
   - Insecure settings
   - Vulnerable packages
   - Misconfigurations
-- ❌ Pipeline fails if any `HIGH` or `CRITICAL` issues are detected
+-  Pipeline fails if any `HIGH` or `CRITICAL` issues are detected
 
 ---
 
-### 🚀 4. `deploy-staging`
+###  4. `deploy-staging`
 
 - Deploys the built image to **Fly.io staging environment**
 - Uses rolling updates to ensure zero downtime
 
 ---
 
-### 🛡️ 5. `nikto-scan`
+###  5. `nikto-scan`
 
 - Uses **Nikto** to scan the staging environment's HTTP surface
 - Detects:
@@ -92,7 +92,7 @@ Performs static code analysis and gathers reports:
 
 ---
 
-### 🌐 6. `deploy-production`
+###  6. `deploy-production`
 
 - Final production deployment via **Fly.io**
 - Uses a production-specific config file:  
@@ -119,8 +119,8 @@ All security scan results are uploaded as GitHub Action artifacts:
 
 The pipeline integrates with a Telegram Bot to alert the team of pipeline status:
 
-- ✅ Success messages when all checks pass
-- ❌ Detailed alert if Bandit, Gitleaks, or Semgrep detect issues
+-  Success messages when all checks pass
+-  Detailed alert if Bandit, Gitleaks, or Semgrep detect issues
 
 ---
 
