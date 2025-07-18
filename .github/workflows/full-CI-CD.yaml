@@ -44,7 +44,7 @@ jobs:
 
       - name: Run Gitleaks
         run: |
-          gitleaks detect --source=. --gitleaks-ignore-path=.scannerignore --report-format=json --report-path=gitleaks_report.json || echo '{"results":[]}' > gitleaks_report.json
+          gitleaks detect --source=. --gitleaks-ignore-path=.gitleaksignore --report-format=json --report-path=gitleaks_report.json || echo '{"results":[]}' > gitleaks_report.json
 
       - name: Run Semgrep
         run: |
