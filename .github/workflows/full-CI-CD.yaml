@@ -9,7 +9,7 @@ permissions:
   actions: write
 
 env:
-  IMAGE_TAG: x7m7s7/devops:latest
+  IMAGE_TAG: x7m7s7/devops:3.11.6-slim
 
 jobs:
 
