@@ -58,7 +58,7 @@ Performs static code analysis and gathers reports:
 
 - Builds a Docker image from the source code
 - Tags the image as:  
-  `x7m7s7/devops:latest`
+  `x7m7s7/devops:3.11.6-slim`
 - Authenticates and pushes the image to DockerHub
 
 ---
@@ -88,7 +88,7 @@ Performs static code analysis and gathers reports:
   - Insecure headers
   - Dangerous files
   - Known server vulnerabilities
-- Outputs results in HTML format (`nikto_report.html`)
+- Outputs results in HTML format (`Web-Scanner_report.html`)
 
 ---
 
@@ -110,7 +110,7 @@ All security scan results are uploaded as GitHub Action artifacts:
 - `semgrep_output.json`
 - `black_output.json`
 - `dockle-report.json`
-- `nikto_report.html`
+- `Web-Scanner_report.html`
 - `full_report.json`
 
 ---
