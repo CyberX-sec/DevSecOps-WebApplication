@@ -199,7 +199,7 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: flyctl deploy --image $IMAGE_TAG --app devops-staging --remote-only --strategy rolling
 
-  nikto-scan:
+  Web-Scanner:
     needs: deploy-staging
     runs-on: ubuntu-latest
     steps:
@@ -213,14 +213,14 @@ jobs:
 
 
 
-      - name: Upload Nikto report
+      - name: Upload Web-Scanner report
         uses: actions/upload-artifact@v4
         with:
-          name: nikto-report
+          name: Web-Scanner-report
           path: nikto_reports/nikto_report.html
 
   deploy-production:
-    needs: nikto-scan
+    needs: Web-Scanner
     runs-on: ubuntu-latest
     steps:
       - name: Install Fly.io CLI
