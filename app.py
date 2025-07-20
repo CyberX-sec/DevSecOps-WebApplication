@@ -128,7 +128,7 @@ def dashboard():
     return render_template('dashboard.html', username=session['username'], balance=balance)
 
 @app.route('/comment', methods=['POST'])
-@csrf.exempt  # ممكن تشيل الإعفاء لو تأكدت من صحة CSRF في كل مكان
+@csrf.exempt  
 def comment():
     if 'username' not in session:
         return redirect('/login')

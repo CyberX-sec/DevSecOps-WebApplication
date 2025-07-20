@@ -1,11 +1,11 @@
-<h1 align="center">🔐 DevSecOps Pipeline</h1>
+<h1 align="center"> DevSecOps Pipeline</h1>
 <p align="center">
   Built and maintained by <strong>CyberX</strong> — securing your pipeline, step by step.
 </p>
 
 ---
 
-## ⚙️ Introduction
+##  Introduction
 
 **DevSecOps** integrates security into every phase of the software development lifecycle—from code to deployment. Instead of treating security as an afterthought, it becomes a shared responsibility and part of the automated CI/CD process.
 
@@ -20,7 +20,7 @@ This project implements a complete DevSecOps pipeline that:
 ---
 
 <details>
-<summary><strong>📋 Pipeline Overview</strong></summary><br>
+<summary><strong> Pipeline Overview</strong></summary><br>
 
 | Stage | Tool/Task | Description |
 |-------|-----------|-------------|
@@ -37,7 +37,7 @@ This project implements a complete DevSecOps pipeline that:
 
 ---
 
-## 🔁 Workflow Breakdown
+##  Workflow Breakdown
 
 ###  1. `security-check`
 
@@ -101,7 +101,7 @@ Performs static code analysis and gathers reports:
 
 ---
 
-## 📦 Reports & Artifacts
+##  Reports & Artifacts
 
 All security scan results are uploaded as GitHub Action artifacts:
 
@@ -124,7 +124,7 @@ The pipeline integrates with a Telegram Bot to alert the team of pipeline status
 
 ---
 
-## 🔐 Environment Variables & Secrets
+##  Environment Variables & Secrets
 
 | Variable | Purpose |
 |----------|---------|
@@ -136,7 +136,7 @@ The pipeline integrates with a Telegram Bot to alert the team of pipeline status
 
 ---
 
-## 🎯 Project Objective
+##  Project Objective
 
 To build a **secure-by-design** CI/CD pipeline that enables:
 

@@ -1,7 +1,7 @@
 app = "devops-production"
 
 [build]
-  image = "x7m7s7/devops:latest"
+  image = "x7m7s7/devops:3.11.6-slim"
 
 [http_service]
   internal_port = 5000

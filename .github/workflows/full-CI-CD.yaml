@@ -44,8 +44,7 @@ jobs:
 
       - name: Run Gitleaks
         run: |
-          gitleaks detect --source=. --gitleaks-ignore-path=.gitleaksignore --report-format=json --report-path=gitleaks_report.json || echo '{"results":[]}' > gitleaks_report.json
-
+          gitleaks detect --source=. --report-format=json --report-path=gitleaks_report.json || echo '{"results":[]}' > gitleaks_report.json
       - name: Run Semgrep
         run: |
           semgrep --config=p/ci --json > semgrep_output.json || echo '{"results":[]}' > semgrep_output.json
@@ -121,7 +120,7 @@ jobs:
           fi
 
           TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
-          CHAT_ID="6043769368"
+          CHAT_ID="5234453428"
 
           if [ "$fail" -eq 1 ]; then
             MSG="Security Scan Failed\n\nIssues:\n- Bandit: $count_bandit\n- Gitleaks: $count_gitleaks\n- Semgrep: $count_semgrep"
