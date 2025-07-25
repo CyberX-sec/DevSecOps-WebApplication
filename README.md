@@ -115,7 +115,7 @@ All security scan results are uploaded as GitHub Action artifacts:
 
 ---
 
-## 📲 Telegram Notifications
+##  Telegram Notifications
 
 The pipeline integrates with a Telegram Bot to alert the team of pipeline status:
 
