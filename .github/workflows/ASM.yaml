@@ -43,13 +43,7 @@ jobs:
           amass enum -active -d ${{ env.DOMAINS }} -o amass_active.txt
           cat amass_passive.txt amass_active.txt | sort -u > amass_all.txt
 
-      - name: Check live hosts with httpx
-        run: |
-          curl -sL https://github.com/projectdiscovery/httpx/releases/download/v1.7.1/httpx_1.7.1_linux_amd64.zip
-          unzip httpx.zip
-          sudo mv httpx /usr/local/bin/
-          cat amass_all.txt | httpx -silent -o live_hosts.txt
-
+      
       - name: Run nuclei vulnerability scan
         run: |
           nuclei -l live_hosts.txt -o nuclei_results.json -json
@@ -60,7 +54,6 @@ jobs:
           name: asm-reports
           path: |
             amass_all.txt
-            live_hosts.txt
             nuclei_results.json
 
       - name: Send Telegram notification
