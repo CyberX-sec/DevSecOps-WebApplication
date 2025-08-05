@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 env:
-  DOMAINS: "devops-staging.fly.dev/"
+  DOMAINS: "devops-staging.fly.dev"
   TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
   TELEGRAM_CHAT_ID: "5234453428"
 
@@ -20,22 +20,26 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Install tools
+      - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y jq curl unzip
+
+      - name: Install Nuclei
+        run: |
           curl -L https://github.com/projectdiscovery/nuclei/releases/download/v3.4.7/nuclei_3.4.7_linux_amd64.zip -o nuclei.zip
           unzip -o nuclei.zip
           chmod +x nuclei
           sudo mv nuclei /usr/local/bin/nuclei
           rm nuclei.zip
 
-
-      - name: Download Amass
+      - name: Install Amass
         run: |
           curl -L https://github.com/owasp-amass/amass/releases/download/v5.0.0/amass_linux_amd64.tar.gz -o amass.tar.gz
           tar -xzf amass.tar.gz
           sudo mv amass_linux_amd64/amass /usr/local/bin/
+          chmod +x /usr/local/bin/amass
+          rm -rf amass_linux_amd64 amass.tar.gz
 
       - name: Subdomain enumeration with Amass
         run: |
@@ -43,10 +47,9 @@ jobs:
           amass enum -active -d ${{ env.DOMAINS }} -o amass_active.txt
           cat amass_passive.txt amass_active.txt | sort -u > amass_all.txt
 
-      
       - name: Run nuclei vulnerability scan
         run: |
-          nuclei -l live_hosts.txt -o nuclei_results.json -json
+          nuclei -l amass_all.txt -o nuclei_results.txt
 
       - name: Upload scan reports
         uses: actions/upload-artifact@v4
@@ -54,12 +57,12 @@ jobs:
           name: asm-reports
           path: |
             amass_all.txt
-            nuclei_results.json
+            nuclei_results.txt
 
       - name: Send Telegram notification
         if: always()
         run: |
-          COUNT=$(jq '. | length' nuclei_results.json)
+          COUNT=$(wc -l < nuclei_results.txt || echo 0)
           if [ "$COUNT" -gt 0 ]; then
             MSG="Nuclei scan found $COUNT potential vulnerabilities on ${{ env.DOMAINS }}"
           else
