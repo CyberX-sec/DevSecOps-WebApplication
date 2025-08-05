@@ -45,7 +45,8 @@ jobs:
 
       - name: Check live hosts with httpx
         run: |
-          curl -sL https://github.com/projectdiscovery/httpx/releases/download/v1.7.1/httpx_1.7.1_linux_amd64.zip | tar xz
+          curl -sL https://github.com/projectdiscovery/httpx/releases/download/v1.7.1/httpx_1.7.1_linux_amd64.zip
+          unzip httpx.zip
           sudo mv httpx /usr/local/bin/
           cat amass_all.txt | httpx -silent -o live_hosts.txt
 
