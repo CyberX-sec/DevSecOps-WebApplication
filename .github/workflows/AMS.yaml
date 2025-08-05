@@ -25,10 +25,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y jq curl unzip
           curl -L https://github.com/projectdiscovery/nuclei/releases/download/v3.4.7/nuclei_3.4.7_linux_amd64.zip -o nuclei.zip
-          unzip nuclei.zip
-          sudo mv nuclei /usr/local/bin/
+          unzip -o nuclei.zip
+          chmod +x nuclei
+          sudo mv nuclei /usr/local/bin/nuclei
           rm nuclei.zip
-          
+
+
       - name: Download Amass
         run: |
           curl -L https://github.com/owasp-amass/amass/releases/download/v5.0.0/amass_linux_amd64.tar.gz -o amass.tar.gz
