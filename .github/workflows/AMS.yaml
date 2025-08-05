@@ -1,0 +1,66 @@
+name: ASM Scan
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DOMAINS: "devops-staging.fly.dev/"
+  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+  TELEGRAM_CHAT_ID: "5234453428"
+
+jobs:
+  asm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y amass jq curl unzip
+          curl -L https://github.com/projectdiscovery/nuclei/releases/download/v3.4.7/nuclei_3.4.7_linux_amd64.zip -o nuclei.zip
+          unzip nuclei.zip
+          sudo mv nuclei /usr/local/bin/
+          rm nuclei.zip
+
+      - name: Subdomain enumeration with Amass
+        run: |
+          amass enum -passive -d ${{ env.DOMAINS }} -o amass_passive.txt
+          amass enum -active -d ${{ env.DOMAINS }} -o amass_active.txt
+          cat amass_passive.txt amass_active.txt | sort -u > amass_all.txt
+
+      - name: Check live hosts with httpx
+        run: |
+          curl -sL https://github.com/projectdiscovery/httpx/releases/download/v1.7.1/httpx_1.7.1_linux_amd64.zip | tar xz
+          sudo mv httpx /usr/local/bin/
+          cat amass_all.txt | httpx -silent -o live_hosts.txt
+
+      - name: Run nuclei vulnerability scan
+        run: |
+          nuclei -l live_hosts.txt -o nuclei_results.json -json
+
+      - name: Upload scan reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: asm-reports
+          path: |
+            amass_all.txt
+            live_hosts.txt
+            nuclei_results.json
+
+      - name: Send Telegram notification
+        if: always()
+        run: |
+          COUNT=$(jq '. | length' nuclei_results.json)
+          if [ "$COUNT" -gt 0 ]; then
+            MSG="Nuclei scan found $COUNT potential vulnerabilities on ${{ env.DOMAINS }}"
+          else
+            MSG="No vulnerabilities found on ${{ env.DOMAINS }}"
+          fi
+          curl -s -X POST https://api.telegram.org/bot${{ env.TELEGRAM_BOT_TOKEN }}/sendMessage -d chat_id=${{ env.TELEGRAM_CHAT_ID }} -d text="$MSG"
