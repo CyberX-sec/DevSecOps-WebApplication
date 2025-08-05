@@ -23,11 +23,17 @@ jobs:
       - name: Install tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y amass jq curl unzip
+          sudo apt-get install -y jq curl unzip
           curl -L https://github.com/projectdiscovery/nuclei/releases/download/v3.4.7/nuclei_3.4.7_linux_amd64.zip -o nuclei.zip
           unzip nuclei.zip
           sudo mv nuclei /usr/local/bin/
           rm nuclei.zip
+          
+      - name: Download Amass
+        run: |
+          curl -L https://github.com/owasp-amass/amass/releases/download/v5.0.0/amass_linux_amd64.tar.gz -o amass.tar.gz
+          tar -xzf amass.tar.gz
+          sudo mv amass_linux_amd64/amass /usr/local/bin/
 
       - name: Subdomain enumeration with Amass
         run: |
