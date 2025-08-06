@@ -23,7 +23,31 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y jq curl unzip
+          sudo apt-get install -y jq curl unzip wget
+
+      - name: Install Subfinder
+        run: |
+          wget https://github.com/projectdiscovery/subfinder/releases/download/v2.5.7/subfinder_2.5.7_linux_amd64.zip -O subfinder.zip
+          unzip -o subfinder.zip
+          chmod +x subfinder
+          sudo mv subfinder /usr/local/bin/subfinder
+          rm subfinder.zip
+
+      - name: Run Subfinder
+        run: |
+          subfinder -d ${{ env.DOMAINS }} -o subdomains.txt || touch subdomains.txt
+
+      - name: Install httpx
+        run: |
+          curl -L https://github.com/projectdiscovery/httpx/releases/download/v1.7.1/httpx_1.7.1_linux_amd64.zip -o httpx.zip
+          unzip -o httpx.zip
+          chmod +x httpx
+          sudo mv httpx /usr/local/bin/
+          rm httpx.zip
+
+      - name: Validate live hosts using httpx
+        run: |
+          cat subdomains.txt | httpx -silent -o live_hosts.txt
 
       - name: Install Nuclei
         run: |
@@ -32,30 +56,6 @@ jobs:
           chmod +x nuclei
           sudo mv nuclei /usr/local/bin/nuclei
           rm nuclei.zip
-
-      - name: Install Amass
-        run: |
-          curl -L https://github.com/owasp-amass/amass/releases/download/v5.0.0/amass_linux_amd64.tar.gz -o amass.tar.gz
-          tar -xzf amass.tar.gz
-          sudo mv amass_linux_amd64/amass /usr/local/bin/
-          chmod +x /usr/local/bin/amass
-          rm -rf amass_linux_amd64 amass.tar.gz
-
-      - name: Subdomain enumeration with Amass (passive + active)
-        run: |
-             amass enum -passive -d ${{ env.DOMAINS }} -o amass_passive.txt || touch amass_passive.txt
-             amass enum -active -d ${{ env.DOMAINS }} -o amass_active.txt || touch amass_active.txt
-             cat amass_passive.txt amass_active.txt | sort -u > amass_all.txt
-
-      - name: Validate live hosts using httpx
-        run: |
-          curl -L https://github.com/projectdiscovery/httpx/releases/download/v1.7.1/httpx_1.7.1_linux_amd64.zip -o httpx.zip
-          unzip -o httpx.zip
-          chmod +x httpx
-          sudo mv httpx /usr/local/bin/
-          rm httpx.zip
-
-          cat amass_all.txt | httpx -silent -o live_hosts.txt
 
       - name: Run nuclei vulnerability scan on live hosts
         run: |
@@ -66,7 +66,7 @@ jobs:
         with:
           name: asm-reports
           path: |
-            amass_all.txt
+            subdomains.txt
             live_hosts.txt
             nuclei_results.txt
 
