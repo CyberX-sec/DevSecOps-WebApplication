@@ -43,9 +43,9 @@ jobs:
 
       - name: Subdomain enumeration with Amass (passive + active)
         run: |
-          amass enum -passive -d ${{ env.DOMAINS }} -o amass_passive.txt
-          amass enum -active -d ${{ env.DOMAINS }} -o amass_active.txt
-          cat amass_passive.txt amass_active.txt | sort -u > amass_all.txt
+             amass enum -passive -d ${{ env.DOMAINS }} -o amass_passive.txt || touch amass_passive.txt
+             amass enum -active -d ${{ env.DOMAINS }} -o amass_active.txt || touch amass_active.txt
+             cat amass_passive.txt amass_active.txt | sort -u > amass_all.txt
 
       - name: Validate live hosts using httpx
         run: |
