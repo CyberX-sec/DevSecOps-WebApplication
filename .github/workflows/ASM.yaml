@@ -3,7 +3,7 @@ name: ASM Scan
 on:
   schedule:
     - cron: '0 2 * * *'  
-  workflow_dispatch:
+  workflow_dispatch:     
 
 permissions:
   contents: read
@@ -41,15 +41,25 @@ jobs:
           chmod +x /usr/local/bin/amass
           rm -rf amass_linux_amd64 amass.tar.gz
 
-      - name: Subdomain enumeration with Amass
+      - name: Subdomain enumeration with Amass (passive + active)
         run: |
           amass enum -passive -d ${{ env.DOMAINS }} -o amass_passive.txt
           amass enum -active -d ${{ env.DOMAINS }} -o amass_active.txt
           cat amass_passive.txt amass_active.txt | sort -u > amass_all.txt
 
-      - name: Run nuclei vulnerability scan
+      - name: Validate live hosts using httpx
         run: |
-          nuclei -l amass_all.txt -o nuclei_results.txt
+          curl -L https://github.com/projectdiscovery/httpx/releases/download/v1.7.1/httpx_1.7.1_linux_amd64.zip -o httpx.zip
+          unzip -o httpx.zip
+          chmod +x httpx
+          sudo mv httpx /usr/local/bin/
+          rm httpx.zip
+
+          cat amass_all.txt | httpx -silent -o live_hosts.txt
+
+      - name: Run nuclei vulnerability scan on live hosts
+        run: |
+          nuclei -l live_hosts.txt -o nuclei_results.txt
 
       - name: Upload scan reports
         uses: actions/upload-artifact@v4
@@ -57,6 +67,7 @@ jobs:
           name: asm-reports
           path: |
             amass_all.txt
+            live_hosts.txt
             nuclei_results.txt
 
       - name: Send Telegram notification
