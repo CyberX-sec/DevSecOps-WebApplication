@@ -5,7 +5,7 @@ from flask_wtf.csrf import CSRFProtect
 import sqlite3
 import os
 import bleach
-
+print("Hello, World!")
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', os.urandom(24))
 csrf = CSRFProtect(app)
